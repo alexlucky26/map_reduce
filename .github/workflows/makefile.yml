@@ -1,0 +1,29 @@
+name: Map Reduce Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential
+
+    - name: Build project
+      run: make all
+
+    - name: Run local tests
+      run: |
+        if [ -f run_locally.sh ]; then
+          bash run_locally.sh
+        else
+          echo "No run_locally.sh found — skipping."
+        fi
